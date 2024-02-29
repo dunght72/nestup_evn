@@ -118,7 +118,7 @@ class EVNAPI:
             )
 
         elif evn_area.get("name") == EVN_NAME.HCMC:
-            from_date, to_date = generate_datetime(monthly_start)
+            from_date, to_date = generate_datetime(monthly_start, offset=1)
             fetch_data = await self.request_update_evnhcmc(
                 customer_id, from_date, to_date
             )
@@ -177,7 +177,7 @@ class EVNAPI:
 
         ssl_context = ssl.create_default_context()
         ssl_context.set_ciphers("ALL:@SECLEVEL=1")
-
+        ssl_context.options |= 0x4
         resp = await self._session.post(
             url=self._evn_area.get("evn_login_url"),
             data=payload,
@@ -449,7 +449,7 @@ class EVNAPI:
 
         ssl_context = ssl.create_default_context()
         ssl_context.set_ciphers("ALL:@SECLEVEL=1")
-
+        ssl_context.options |= 0x4
         resp = await self._session.post(
             url=self._evn_area.get("evn_data_url"),
             data={
